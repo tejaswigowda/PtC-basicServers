@@ -1,9 +1,8 @@
-console.log(process.ENV);
 var http = require("http");
 
 var callback = function (req, res) { // req -> request object; res -> response object
    res.writeHead(200, {'Content-Type': 'text/plain'}); // send response header
-	var st = "sjdvjhsdbgkjds"
+   var st = "Hello World"
    res.end(st); // send response body
 }
 
