@@ -1,15 +1,40 @@
-var http = require("http");
+var express = require("express");
+var server = express();
+var bodyParser = require('body-parser');
+var errorHandler = require('errorhandler');
+var methodOverride = require('method-override');
+var hostname = process.env.HOSTNAME || 'localhost';
+var port = 1234;
 
-var callback = function (req, res) { // req -> request object; res -> response object
-  var eq = req.url.replace("/","");;
+server.get("/add", function (req, res) {
+    var a = parseFloat(req.query.a);
+    var b = parseFloat(req.query.b);
+    res.send((a+b).toString());
+});
 
-  if(eq.indexOf("favicon") >=0 ) return;
+server.get("/sub", function (req, res) {
+    var a = parseFloat(req.query.a);
+    var b = parseFloat(req.query.b);
+    res.send((a-b).toString());
+});
 
-  var r = eq + " = " + eval(eq) + "\n";
-   res.writeHead(200, {'Content-Type': 'text/plain'}); // send response header
-   res.end(r); // send response body
-}
+server.get("/mul", function (req, res) {
+    var a = parseFloat(req.query.a);
+    var b = parseFloat(req.query.b);
+    res.send((a*b).toString());
+});
 
-var server = http.createServer(callback) // create an http server
-server.listen(1234); // make server listen to port 1234
-console.log("Server running at: "+ "http://127.0.0.1:1234");
+server.get("/div", function (req, res) {
+    var a = parseFloat(req.query.a);
+    var b = parseFloat(req.query.b);
+    res.send((a/b).toString());
+});
+
+
+server.use(methodOverride());
+server.use(bodyParser());
+server.use(errorHandler());
+
+console.log("Simple static server listening at http://" + hostname + ":" + port);
+server.listen(port);
+
